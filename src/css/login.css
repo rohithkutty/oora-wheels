@@ -1,0 +1,36 @@
+.login {
+  padding-top: 3%;
+  background: url('../images/travel.jpg');
+  height: 680px;
+  background-repeat: no-repeat;
+}
+
+.formList {
+  text-align: right;
+}
+
+.formValue {
+  text-align: center;
+}
+
+.inputValue {
+  width: 90%;
+}
+
+.loginForm {
+  padding: 30px !important;
+}
+
+.checkbox-remember {
+  padding: 15px;
+}
+
+.forgotPassword {
+  position: absolute;
+  left: 40%;
+  margin-top: 15px;
+}
+
+.forgotPassword:hover {
+  text-decoration: underline;
+}

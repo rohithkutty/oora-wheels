@@ -1,0 +1,30 @@
+.signup{
+  background: url('../images/city-lights-wallpaper.jpg');
+  height: 680px;
+  padding-top: 50px;
+
+  /* -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px); */
+}
+
+.signup-button {
+  background: orangered !important;
+  color: white !important;
+}
+
+.signup-button:hover {
+  background: darkred !important;
+}
+
+.dropdown-signup {
+  width: 180px !important;
+  position: relative;
+  left: 11px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  height: 22px;
+  font-size: 12px;
+}
