@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Segment, Input, Button, Divider, Dropdown } from "semantic-ui-react";
+import { Grid, Segment, Input, Button, Divider, Dropdown,Header } from "semantic-ui-react";
 import "../css/signup.css";
 import { Link } from "react-router-dom";
 
@@ -28,6 +28,9 @@ class SignUp extends React.Component {
   }
 
   render() {
+
+    document.title = "OORA Wheels | Sign up";
+
     return (
       <div className="signup">
         <Grid>
@@ -36,6 +39,11 @@ class SignUp extends React.Component {
             <Grid.Column width={6}>
               <Segment raised>
                 <Grid className="loginForm">
+                  <Grid.Column width={16}>
+                    <Header as='h2' icon textAlign='center'>
+                      <Header.Content>Sign Up</Header.Content>
+                    </Header>
+                  </Grid.Column>
                   <Grid.Column
                     width={6}
                     verticalAlign="middle"
