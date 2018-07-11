@@ -4,8 +4,40 @@ import "../css/login.css";
 import { Link } from "react-router-dom";
 
 class Login extends React.Component {
-  handleInput() {
-    alert("highlighted");
+  constructor(props) {
+    super();
+    this.state = {
+      username: '',
+      password: ''
+    }
+    this.handleInput = this.handleInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleInput(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleSubmit(e) {
+    const login = {
+      username: this.state.username,
+      password: this.state.password
+    }
+
+    console.log(login);
+    
+    fetch('http://localhost:3034/login', {
+      method: 'POST',
+      headers :{
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify(login)      
+    })
+    .then(res =>  res.json())
+    .then(data => console.log(data))
   }
 
   render() {
@@ -34,12 +66,13 @@ class Login extends React.Component {
                   </Grid.Column>
                   <Grid.Column width={8} className="formValue">
                     <Input
-                      id="roomname"
+                      id="username"
                       type="email"
                       size="mini"
+                      name="username"
                       icon='envelope'
                       placeholder="email address"
-                      // onChange={this.handleInput}
+                      onChange={this.handleInput}
                       className="inputValue"
                     />
                   </Grid.Column>
@@ -52,12 +85,13 @@ class Login extends React.Component {
                   </Grid.Column>
                   <Grid.Column width={8} className="formValue">
                     <Input
-                      id="roomname"
+                      id="password"
                       type="password"
                       size="mini"
+                      name="password"
                       icon='shield alternate'
                       placeholder="secret password"
-                      // onChange={this.handleInput}
+                      onChange={this.handleInput}
                       className="inputValue"
                     />
                   </Grid.Column>
@@ -74,7 +108,7 @@ class Login extends React.Component {
                   </Grid.Column>
                   <Grid.Column width={16}>
                     <Link to="/dashboard" >
-                      <Button primary fluid>
+                      <Button primary fluid onClick={this.handleSubmit}>
                         Login
                     </Button>
                     </Link>
