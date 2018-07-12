@@ -1,0 +1,10 @@
+.navigation-bar ul{
+  display: inline;
+}
+
+.navigation-bar {
+  list-style: none;
+  text-align: center;
+  padding: 20px;
+  border-bottom: 2px solid;
+}

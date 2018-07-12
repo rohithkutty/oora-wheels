@@ -2,13 +2,15 @@ import React from "react";
 import { Grid, Segment, Input, Form, Button, Divider, Header } from "semantic-ui-react";
 import "../css/login.css";
 import { Link } from "react-router-dom";
+import Navbar from "./navbar";
 
 class Login extends React.Component {
   constructor(props) {
     super();
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      valid: []
     }
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,31 +23,36 @@ class Login extends React.Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault();
     const login = {
       username: this.state.username,
       password: this.state.password
     }
 
-    console.log(login);
-    
     fetch('http://localhost:3034/login', {
       method: 'POST',
-      headers :{
+      headers: {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify(login)      
+      body: JSON.stringify(login)
     })
-    .then(res =>  res.json())
-    .then(data => console.log(data))
+      .then(res => res.json())
+      .then(user => this.setState({ valid : [user] }))
   }
 
   render() {
 
     document.title = "OORA Wheels | Login";
 
+    if((this.state.valid).length > 0){
+      let validate = this.state.valid;
+      console.log(validate[0].message);
+    }
+
     return (
       <div className="login">
+        <Navbar />
         <Grid>
           <Grid.Row>
             <Grid.Column width={5} />
