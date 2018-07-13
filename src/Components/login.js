@@ -1,5 +1,14 @@
 import React from "react";
-import { Grid, Segment, Input, Form, Button, Divider, Header } from "semantic-ui-react";
+import {
+  Grid,
+  Segment,
+  Input,
+  Form,
+  Button,
+  Divider,
+  Header,
+  Message
+} from "semantic-ui-react";
 import "../css/login.css";
 import { Link } from "react-router-dom";
 import Navbar from "./navbar";
@@ -8,10 +17,10 @@ class Login extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      username: '',
-      password: '',
-      valid: []
-    }
+      username: "",
+      password: "",
+      errorAppeared: false      
+    };
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -19,7 +28,7 @@ class Login extends React.Component {
   handleInput(e) {
     this.setState({
       [e.target.name]: e.target.value
-    })
+    });
   }
 
   handleSubmit(e) {
@@ -27,28 +36,38 @@ class Login extends React.Component {
     const login = {
       username: this.state.username,
       password: this.state.password
-    }
+    };
 
-    fetch('http://localhost:3034/login', {
-      method: 'POST',
+    if(login.username && login.password) {
+      fetch("http://localhost:3034/login", {
+      method: "POST",
       headers: {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "*"
       },
       body: JSON.stringify(login)
     })
       .then(res => res.json())
-      .then(user => this.setState({ valid : [user] }))
+      .then(user => {
+        if (user.message === "success") {
+          this.props.history.push("/dashboard");
+        }
+      })
+      .catch(err => {
+        if (err) {
+          this.props.history.push("/error");
+        }
+      });
+    } else {
+      this.setState({
+        errorAppeared: true
+      })
+    }
+    
   }
 
   render() {
-
     document.title = "OORA Wheels | Login";
-
-    if((this.state.valid).length > 0){
-      let validate = this.state.valid;
-      console.log(validate[0].message);
-    }
 
     return (
       <div className="login">
@@ -60,7 +79,15 @@ class Login extends React.Component {
               <Segment raised>
                 <Grid className="loginForm">
                   <Grid.Column width={16}>
-                    <Header as='h2' icon textAlign='center'>
+                  {(this.state.errorAppeared === true) && (
+                      <Message
+                        id='errorMessage'
+                        negative
+                        header='Note: Mandatory fields missing'
+                        content='Please fill all the fields to login'>
+                      </Message>
+                    )}
+                    <Header as="h2" icon textAlign="center">
                       <Header.Content>Login</Header.Content>
                     </Header>
                   </Grid.Column>
@@ -77,7 +104,7 @@ class Login extends React.Component {
                       type="email"
                       size="mini"
                       name="username"
-                      icon='envelope'
+                      icon="envelope"
                       placeholder="email address"
                       onChange={this.handleInput}
                       className="inputValue"
@@ -96,7 +123,7 @@ class Login extends React.Component {
                       type="password"
                       size="mini"
                       name="password"
-                      icon='shield alternate'
+                      icon="shield alternate"
                       placeholder="secret password"
                       onChange={this.handleInput}
                       className="inputValue"
@@ -114,13 +141,13 @@ class Login extends React.Component {
                     </Link>
                   </Grid.Column>
                   <Grid.Column width={16}>
-                    <Link to="/dashboard" >
+                    <Link to="/dashboard">
                       <Button primary fluid onClick={this.handleSubmit}>
                         Login
-                    </Button>
+                      </Button>
                     </Link>
                     <Divider horizontal>Or</Divider>
-                    <Link to="/signup" >
+                    <Link to="/signup">
                       <Button secondary fluid>
                         Create an Account ?
                       </Button>

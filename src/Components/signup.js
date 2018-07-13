@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Segment, Input, Button, Divider, Dropdown, Header } from "semantic-ui-react";
+import { Grid, Segment, Input, Button, Divider, Dropdown, Header, Message } from "semantic-ui-react";
 import "../css/signup.css";
 import { Link } from "react-router-dom";
 import Navbar from "./navbar";
@@ -31,7 +31,8 @@ class SignUp extends React.Component {
       email: '',
       gender: '',
       password: '',
-      valid: []
+      errorAppeared: false,
+      emailExist: false
     }
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,35 +59,35 @@ class SignUp extends React.Component {
 
     console.log(registerUser);
 
-
-    fetch('http://localhost:3034/register', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(registerUser)
-    })
-      .then(res => res.json())
-      .then(newUser => 
-        this.setState({ valid: [newUser] }),
-        
-        this.props.history.push('/login'),
-        console.log('called')
-        
-
-      )
-      .catch(err =>
-        this.setState({
-          valid: [{
-            message: 'error'
-          }]
-        }),
-        
-        this.props.history.push('/error'),
-        console.log('error called')
-        
-      )
+    if (registerUser.firstname && registerUser.lastname && registerUser.email && registerUser.gender && registerUser.password) {
+      fetch('http://localhost:3034/register', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify(registerUser)
+      })
+        .then(res => res.json())
+        .then((newUser) => {
+          if (newUser.message === 'registered') {
+            this.props.history.push('/login')
+          } else if (newUser.message === 'email already exists') {
+            this.setState({
+              emailExist: true
+            })
+          }
+        })
+        .catch((err) => {
+          if (err) {
+            this.props.history.push('/error')
+          }
+        })
+    } else {
+      this.setState({
+        errorAppeared : true
+      })
+    }
   }
 
   render() {
@@ -103,6 +104,22 @@ class SignUp extends React.Component {
               <Segment raised>
                 <Grid className="loginForm">
                   <Grid.Column width={16}>
+                    {(this.state.errorAppeared === true) && (
+                      <Message
+                        id='errorMessage'
+                        negative
+                        header='Note: Mandatory fields missing'
+                        content='Please fill all the fields to register'>
+                      </Message>
+                    )}
+                    {(this.state.emailExist === true) && (
+                      <Message
+                        id='errorMessage'
+                        negative
+                        header='Note: Email already exists'
+                        content='Please enter new email to register / visit forgot password page'>
+                      </Message>
+                    )}
                     <Header as='h2' icon textAlign='center'>
                       <Header.Content>Sign Up</Header.Content>
                     </Header>
