@@ -4,9 +4,12 @@ import Navbar from './navbar';
 
 class Home extends React.Component {
   render() {
+
+  let userLoggedin = false;
+    
     return (
       <div className='home'>
-        <Navbar />
+        <Navbar userLoggedIn={userLoggedin}/>
         This is a home Component
       </div>
     )

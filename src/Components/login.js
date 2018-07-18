@@ -13,13 +13,16 @@ import "../css/login.css";
 import { Link } from "react-router-dom";
 import Navbar from "./navbar";
 
+var userRegistered = false;
+
 class Login extends React.Component {
   constructor(props) {
     super();
     this.state = {
       username: "",
       password: "",
-      errorAppeared: false      
+      errorAppeared: false,
+      userLoggedIn: false
     };
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,40 +41,62 @@ class Login extends React.Component {
       password: this.state.password
     };
 
-    if(login.username && login.password) {
+    if (login.username && login.password) {
       fetch("http://localhost:3034/login", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-      body: JSON.stringify(login)
-    })
-      .then(res => res.json())
-      .then(user => {
-        if (user.message === "success") {
-          this.props.history.push("/dashboard");
-        }
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify(login)
       })
-      .catch(err => {
-        if (err) {
-          this.props.history.push("/error");
-        }
-      });
+        .then(res => res.json())
+        .then(user => {
+          if (user.message === "success") {
+            this.props.history.push({
+              pathname: '/dashboard',
+              state: { loggedIn: true }
+            })
+          }
+        })
+        .catch(err => {
+          if (err) {
+            this.props.history.push("/error");
+          }
+        });
     } else {
       this.setState({
         errorAppeared: true
       })
+
+      if (!login.username) {
+        document.getElementById('username').style.borderColor = "#912d2b";
+      } else {
+        document.getElementById('username').style.borderColor = "grey";
+      }
+
+      if (!login.password) {
+        document.getElementById('password').style.borderColor = "#912d2b";
+      } else {
+        document.getElementById('username').style.borderColor = "grey";
+      }
+
     }
-    
+
   }
 
   render() {
     document.title = "OORA Wheels | Login";
 
+    if (this.props.location.state) {
+      if (this.props.location.state.registered === true) {
+        userRegistered = true;
+      }
+    }
+
     return (
       <div className="login">
-        <Navbar />
+        <Navbar userLoggedIn={this.state.userLoggedIn} />
         <Grid>
           <Grid.Row>
             <Grid.Column width={5} />
@@ -79,12 +104,20 @@ class Login extends React.Component {
               <Segment raised>
                 <Grid className="loginForm">
                   <Grid.Column width={16}>
-                  {(this.state.errorAppeared === true) && (
+                    {(this.state.errorAppeared === true) && (
                       <Message
                         id='errorMessage'
                         negative
                         header='Note: Mandatory fields missing'
                         content='Please fill all the fields to login'>
+                      </Message>
+                    )}
+                    {(userRegistered === true) && (
+                      <Message
+                        id='successMessage'
+                        success
+                        header='Note: User registered successfully'
+                        content='Please enter the credentials to login'>
                       </Message>
                     )}
                     <Header as="h2" icon textAlign="center">

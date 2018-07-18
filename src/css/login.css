@@ -27,9 +27,13 @@
 .forgotPassword {
   position: absolute;
   left: 40%;
-  margin-top: 15px;
+  margin-top: 25px;
 }
 
 .forgotPassword:hover {
   text-decoration: underline;
+}
+
+#successMessage {
+  text-align: center;
 }

@@ -32,7 +32,8 @@ class SignUp extends React.Component {
       gender: '',
       password: '',
       errorAppeared: false,
-      emailExist: false
+      emailExist: false,
+      userLoggedIn: false
     }
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -71,7 +72,10 @@ class SignUp extends React.Component {
         .then(res => res.json())
         .then((newUser) => {
           if (newUser.message === 'registered') {
-            this.props.history.push('/login')
+            this.props.history.push({
+              pathname: '/login',
+              state: { registered: true }
+            })
           } else if (newUser.message === 'email already exists') {
             this.setState({
               emailExist: true
@@ -96,7 +100,7 @@ class SignUp extends React.Component {
 
     return (
       <div className="signup">
-        <Navbar />
+        <Navbar userLoggedIn={this.state.userLoggedIn}/>
         <Grid>
           <Grid.Row>
             <Grid.Column width={5} />

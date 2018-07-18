@@ -1,0 +1,13 @@
+#menubar{
+  padding-left: 30px !important;
+}
+
+.carCard {
+  margin-left: 45px !important;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.carImage{
+  height: 200px;
+}

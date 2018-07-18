@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../css/navbar.css";
 
 class Navbar extends Component {
+
   render() {
     return (
       <div>
@@ -13,7 +14,8 @@ class Navbar extends Component {
                 OORA-Wheels
               </Link>
             </div>
-            <ul className="nav navbar-nav navbar-right">
+            {(this.props.userLoggedIn === false) && (
+              <ul className="nav navbar-nav navbar-right">
               <li>
                 <Link to='/signup'>
                   <span className="glyphicon glyphicon-user" /> Sign Up
@@ -25,6 +27,16 @@ class Navbar extends Component {
                 </Link>
               </li>
             </ul>
+            )}
+            {(this.props.userLoggedIn === true) && (
+              <ul className="nav navbar-nav navbar-right">
+              <li>
+                <Link to='/login'>
+                  <span className="glyphicon glyphicon-log-out" /> Logout
+                </Link>
+              </li>
+            </ul>
+            )}
           </div>
         </nav>
       </div>

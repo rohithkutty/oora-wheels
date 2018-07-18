@@ -35,7 +35,10 @@ app.use(
 );
 
 app.post('/login', function (req, res) {
-
+  console.log(req.body);
+  res.json({
+    message:"success"
+  })
 });
 
 app.post('/register', function (req, res) {
