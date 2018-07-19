@@ -3,11 +3,65 @@
 }
 
 .carCard {
-  margin-left: 45px !important;
-  margin-top: 10px !important;
-  margin-bottom: 10px !important;
+  margin: 10px 5px !important;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 .carImage{
   height: 200px;
+}
+
+#budgetSection {
+  margin-left: 50px;
+  margin-right: 20px;
+  overflow: auto;
+  white-space: nowrap;
+  display: inherit;
+}
+
+.carBlock {
+  display: inline;
+}
+
+.carTitle {
+  width: 96%;
+  position: relative;
+  top: 35px;
+  left: 15px;
+  color: white !important;
+  padding: 10px !important;
+  border-radius: 10px;
+  font-family: fantasy !important;
+}
+
+#mini-cars {
+  background-color: #2a9aa5;
+}
+
+#sedan-cars {
+  background-color: #f47100;
+}
+
+#prime-cars {
+  background-color: crimson;
+}
+
+#luxury-cars {
+  background-color: #c7006e;
+}
+
+.carParallexStyle {
+  background-attachment: fixed !important;
+  height: 400px;
+  width: 100%;
+  background-repeat: no-repeat !important;
+}
+
+#CarParallex1 {
+  background: url('../images/travel-image3.jpg');
+}
+
+#CarParallex2 {
+  background: url('../images/travel-image1.jpg');
 }

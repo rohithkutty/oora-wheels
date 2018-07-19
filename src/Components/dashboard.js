@@ -1,40 +1,10 @@
 import React from 'react'
-import { Header, Grid } from 'semantic-ui-react'
+import { Header, Grid, Segment } from 'semantic-ui-react'
 import Navbar from './navbar';
 // import SidebarMenu from './sidebar';
 import '../css/dashboard.css';
 import CarComponent from './carComponent';
-
-const cars = [
-  {
-    id: 1,
-    name: "Swift Desire",
-    model: "2015",
-    img: "https://media.zigcdn.com/media/model/2017/May/dire_600x300.jpg",
-    desc: "New model swift desire car"
-  },
-  {
-    id: 2,
-    name: "Tata Indica",
-    model: "2015",
-    img: "https://auto.ndtvimg.com/car-images/big/tata/indica/tata-indica.jpg?v=7",
-    desc: "New model swift desire car"
-  },
-  {
-    id: 3,
-    name: "Jaquar",
-    model: "2015",
-    img: "https://imgd.aeplcdn.com/1280x720/cw/ec/14152/Jaguar-XE-Right-Front-Three-Quarter-65731.jpg?wm=0&t=152409487&t=152409487&q=100",
-    desc: "New model swift desire car"
-  },
-  {
-    id: 4,
-    name: "Swift Normal",
-    model: "2015",
-    img: "https://mlab.com/base/img/mLab-logo-dark.svg",
-    desc: "New model swift desire car"
-  }
-];
+import { miniCars, sedanCars, primeCars, luxuryCars } from './stub/cars';
 
 export default class Dashboard extends React.Component {
 
@@ -44,13 +14,46 @@ export default class Dashboard extends React.Component {
       var isLoggedIn = this.props.location.state.loggedIn;
     }
 
-    let carItems;
+    let miniCarItems;
+    let sedanCarItems;
+    let primeCarItems;
+    let luxuryCarItems;
 
-    if (cars.length > 0) {
-      carItems = cars.map(car => {
+    if (miniCars.length > 0) {
+      miniCarItems = miniCars.map(car => {
         return (
-          <Grid.Column>
-            <CarComponent key={cars.id} cars={car} />
+          <Grid.Column className="carBlock">
+            <CarComponent key={miniCars.id} cars={car} />
+          </Grid.Column>
+        );
+      });
+    }
+
+    if (sedanCars.length > 0) {
+      sedanCarItems = sedanCars.map(car => {
+        return (
+          <Grid.Column className="carBlock">
+            <CarComponent key={sedanCars.id} cars={car} />
+          </Grid.Column>
+        );
+      });
+    }
+
+    if (primeCars.length > 0) {
+      primeCarItems = primeCars.map(car => {
+        return (
+          <Grid.Column className="carBlock">
+            <CarComponent key={primeCars.id} cars={car} />
+          </Grid.Column>
+        );
+      });
+    }
+
+    if (luxuryCars.length > 0) {
+      luxuryCarItems = luxuryCars.map(car => {
+        return (
+          <Grid.Column className="carBlock">
+            <CarComponent key={luxuryCars.id} cars={car} />
           </Grid.Column>
         );
       });
@@ -61,9 +64,6 @@ export default class Dashboard extends React.Component {
         <Navbar userLoggedIn={isLoggedIn} />
         <Grid>
           <Grid.Row>
-            {/* <Grid.Column width={3} id="menubar">
-              <SidebarMenu />
-            </Grid.Column> */}
             <Grid.Column width={16}>
               <Header as='h2' icon textAlign='center'>
                 <Header.Content>Dashboard</Header.Content>
@@ -71,7 +71,34 @@ export default class Dashboard extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={4}>
-            {carItems}
+            <div id='CarParallex1' className='carParallexStyle'></div>
+            <Header as='h2' className='carTitle' id='mini-cars' icon textAlign='center'>
+              <Header.Content>Mini Cars</Header.Content>
+            </Header>
+            <Segment id="budgetSection">
+              {miniCarItems}
+            </Segment>
+            <div id='CarParallex2' className='carParallexStyle'></div>
+            <Header as='h2' className='carTitle' id='sedan-cars' icon textAlign='center'>
+              <Header.Content>Sedan Cars</Header.Content>
+            </Header>
+            <Segment id="budgetSection">
+              {sedanCarItems}
+            </Segment>
+            <div id='CarParallex3' className='carParallexStyle'></div>
+            <Header as='h2' className='carTitle' id='prime-cars' icon textAlign='center'>
+              <Header.Content>Prime Cars</Header.Content>
+            </Header>
+            <Segment id="budgetSection">
+              {primeCarItems}
+            </Segment>
+            <div id='CarParallex4' className='carParallexStyle'></div>
+            <Header as='h2' className='carTitle' id='luxury-cars' icon textAlign='center'>
+              <Header.Content>Luxury Cars</Header.Content>
+            </Header>
+            <Segment id="budgetSection">
+              {luxuryCarItems}
+            </Segment>
           </Grid.Row>
         </Grid>
       </div>
