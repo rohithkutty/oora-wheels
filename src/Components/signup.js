@@ -102,7 +102,7 @@ class SignUp extends React.Component {
       <div className="signup">
         <Navbar userLoggedIn={this.state.userLoggedIn}/>
         <Grid>
-          <Grid.Row>
+          <Grid.Row id='signUpBlock'>
             <Grid.Column width={5} />
             <Grid.Column width={6}>
               <Segment raised>

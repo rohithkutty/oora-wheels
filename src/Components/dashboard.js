@@ -63,7 +63,7 @@ export default class Dashboard extends React.Component {
       <div>
         <Navbar userLoggedIn={isLoggedIn} />
         <Grid>
-          <Grid.Row>
+          <Grid.Row id='dashboardBlock'>
             <Grid.Column width={16}>
               <Header as='h2' icon textAlign='center'>
                 <Header.Content>Dashboard</Header.Content>
@@ -99,6 +99,7 @@ export default class Dashboard extends React.Component {
             <Segment id="budgetSection">
               {luxuryCarItems}
             </Segment>
+            <div id='CarParallex5' className='carParallexStyle'></div>
           </Grid.Row>
         </Grid>
       </div>

@@ -98,7 +98,7 @@ class Login extends React.Component {
       <div className="login">
         <Navbar userLoggedIn={this.state.userLoggedIn} />
         <Grid>
-          <Grid.Row>
+          <Grid.Row id='loginBlock'>
             <Grid.Column width={5} />
             <Grid.Column width={6}>
               <Segment raised>

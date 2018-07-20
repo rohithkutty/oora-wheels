@@ -2,10 +2,18 @@
   padding-left: 30px !important;
 }
 
+#dashboardBlock {
+  margin-top: 5%;
+}
+
 .carCard {
   margin: 10px 5px !important;
   overflow: auto;
   white-space: nowrap;
+}
+
+.carCard:hover {
+  box-shadow: 0px 0px 10px 2px grey;
 }
 
 .carImage{
@@ -33,8 +41,9 @@
   padding: 10px !important;
   border-radius: 10px;
   font-family: fantasy !important;
+  background-color: #2185d0 !important;
 }
-
+/* 
 #mini-cars {
   background-color: #2a9aa5;
 }
@@ -49,13 +58,14 @@
 
 #luxury-cars {
   background-color: #c7006e;
-}
+} */
 
 .carParallexStyle {
   background-attachment: fixed !important;
   height: 400px;
   width: 100%;
   background-repeat: no-repeat !important;
+  background-size: 100% !important;
 }
 
 #CarParallex1 {
@@ -64,4 +74,49 @@
 
 #CarParallex2 {
   background: url('../images/travel-image1.jpg');
+}
+
+#CarParallex3 {
+  background: url('../images/travel-image4-copy.jpg');
+}
+
+#CarParallex4 {
+  background: url('../images/travel-image5.jpg')
+}
+
+#CarParallex5 {
+  background: url('../images/travel-image6-copy.jpg')
+}
+
+#carSelect {
+  margin-top: 10px;
+}
+
+#carRating {
+  padding-top: 10px;
+}
+
+#bookNow {
+  float: right;
+}
+
+#background-carousel{
+	position:fixed;
+	width:100%;
+	height:100%;
+	z-index:-1;
+}
+.carousel,
+.carousel-inner {
+	width:100%;
+	height:100%;
+	z-index:0;
+	overflow:hidden;
+}
+.item {
+	width:100%;
+	height:100%;
+	background-position:center center;
+	background-size:cover;
+	z-index:0;
 }

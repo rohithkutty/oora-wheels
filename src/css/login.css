@@ -1,7 +1,11 @@
 .login {
   background: url('../images/travel.jpg');
-  height: 725px;
+  height: 850px;
   background-repeat: no-repeat;
+}
+
+#loginBlock {
+  margin-top: 5%;
 }
 
 .formList {
