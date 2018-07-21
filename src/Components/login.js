@@ -22,7 +22,9 @@ class Login extends React.Component {
       username: "",
       password: "",
       errorAppeared: false,
-      userLoggedIn: false
+      userLoggedIn: false,
+      userExist: false,
+      incorrectDetails: false
     };
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,12 +39,12 @@ class Login extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const login = {
-      username: this.state.username,
+      email: this.state.username,
       password: this.state.password
     };
 
-    if (login.username && login.password) {
-      fetch("http://localhost:3034/login", {
+    if (login.email && login.password) {
+      fetch("http://localhost:5000/api/users/login", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -52,10 +54,18 @@ class Login extends React.Component {
       })
         .then(res => res.json())
         .then(user => {
-          if (user.message === "success") {
+          if (user.success === true) {
             this.props.history.push({
               pathname: '/dashboard',
               state: { loggedIn: true }
+            })
+          } else if (user.message === "User not found") {
+            this.setState({
+              userExist: true
+            })
+          } else if (user.message === "Password incorrect") {
+            this.setState({
+              incorrectDetails : true
             })
           }
         })
@@ -118,6 +128,22 @@ class Login extends React.Component {
                         success
                         header='Note: User registered successfully'
                         content='Please enter the credentials to login'>
+                      </Message>
+                    )}
+                    {(this.state.userExist === true) && (
+                      <Message
+                        id='errorMessage'
+                        negative
+                        header='Note: Email ID not registered'
+                        content='Click on create account to get registered'>
+                      </Message>
+                    )}
+                    {(this.state.incorrectDetails === true) && (
+                      <Message
+                        id='errorMessage'
+                        negative
+                        header='Note: Email ID / password incorrect'
+                        content='Please re-check your login details'>
                       </Message>
                     )}
                     <Header as="h2" icon textAlign="center">

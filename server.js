@@ -1,85 +1,44 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var cors = require('cors');
-var mongo = require("mongojs");
-var db = mongo('oora-wheels', ["users"]);
-var expressValidator = require("express-validator");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const cors = require('cors');
 
-var PORT = process.env.PORT || 3034;
-var app = express();
+const users = require('./server/routes/api/users');
 
+const app = express();
+
+// DB config
+const db = require('./server/config/keys').mongoURI;
+
+//Cors access
 app.use(cors());
 
-//Body parser middleware
+//Body Parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Express validator middleware
-app.use(
-  expressValidator({
-    errorFormatter: function (param, msg, value) {
-      var namespace = param.split("."),
-        root = namespace.shift(),
-        formParam = root;
+// Connect to MongoDB
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(()=> console.log('MongoDB connected'))
+  .catch(err => console.log(err));
 
-      while (namespace.length) {
-        formParam += "[" + namespace.shift() + "]";
-      }
-      return {
-        param: formParam,
-        msg: msg,
-        value: value
-      };
-    }
-  })
-);
+// Passport middleware
+app.use(passport.initialize());
 
-app.post('/login', function (req, res) {
-  console.log(req.body);
-  res.json({
-    message:"success"
-  })
+// Passport config
+require('./server/config/passport')(passport);
+
+// Sample route
+app.get('/hello', (req, res) => {
+  res.send('Hello');
 });
 
-app.post('/register', function (req, res) {
-  req.checkBody("firstname", "First name id is Required").notEmpty();
-  req.checkBody("lastname", "Last name is Required").notEmpty();
-  req.checkBody("email", "Email is Required").notEmpty();
-  req.checkBody("gender", "Gender is Required").notEmpty();
-  req.checkBody("password", "Password is Required").notEmpty();
+// Use routes
+app.use('/api/users', users);
 
-  var errors = req.validationErrors();
+const PORT = process.env.PORT || 5000;
 
-  if (errors) {
-    db.users.find(function (err, docs) {
-      res.json({
-        users: docs
-      });
-    });
-  } else {
-    var newUser = {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      gender: req.body.gender,
-      password: req.body.password
-    };
-
-    console.log(newUser);
-    
-    db.users.insert(newUser, function (err, result) {
-      console.log('value inserted');
-      
-      if (err) {
-        console.log(err);
-      }
-      res.json({
-        message: "registered"
-      });
-    });
-  }
-});
-
-app.listen(PORT, function () {
-  console.log(`Server listening on port ${PORT}`);
-})
+app.listen(PORT, () =>
+  console.log(`server listening on port ${PORT}`));

@@ -51,8 +51,7 @@ class SignUp extends React.Component {
     var genderValue = document.getElementsByName('gender')[0].innerText;
 
     const registerUser = {
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
+      name: this.state.firstname + this.state.lastname,
       email: this.state.email,
       gender: genderValue,
       password: this.state.password
@@ -60,8 +59,8 @@ class SignUp extends React.Component {
 
     console.log(registerUser);
 
-    if (registerUser.firstname && registerUser.lastname && registerUser.email && registerUser.gender && registerUser.password) {
-      fetch('http://localhost:3034/register', {
+    if (registerUser.name && registerUser.email && registerUser.gender && registerUser.password) {
+      fetch('http://localhost:5000/api/users/register', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',

@@ -40,7 +40,7 @@
   color: white !important;
   padding: 10px !important;
   border-radius: 10px;
-  font-family: fantasy !important;
+  font-family: 'Merienda', cursive !important;
   background-color: #2185d0 !important;
 }
 /* 
@@ -119,4 +119,13 @@
 	background-position:center center;
 	background-size:cover;
 	z-index:0;
+}
+
+#relogin {
+  padding: 5px;
+  text-decoration: underline;
+}
+
+#sub-header {
+  padding: 10px;
 }

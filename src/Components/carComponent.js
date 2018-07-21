@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Image, Rating, Button, Icon, Popup } from 'semantic-ui-react';
+import { Card, Image, Rating, Button, Popup } from 'semantic-ui-react';
 
 const CarComponent = (props) => (
   <Card className="carCard">

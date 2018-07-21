@@ -1,5 +1,6 @@
 import React from 'react'
-import { Header, Grid, Segment } from 'semantic-ui-react'
+import { Link } from "react-router-dom";
+import { Header, Grid, Segment, Icon } from 'semantic-ui-react'
 import Navbar from './navbar';
 // import SidebarMenu from './sidebar';
 import '../css/dashboard.css';
@@ -10,8 +11,10 @@ export default class Dashboard extends React.Component {
 
   render() {
 
+    var isLoggedIn = false;
+
     if (this.props.location.state) {
-      var isLoggedIn = this.props.location.state.loggedIn;
+      isLoggedIn = this.props.location.state.loggedIn;
     }
 
     let miniCarItems;
@@ -59,51 +62,71 @@ export default class Dashboard extends React.Component {
       });
     }
 
-    return (
-      <div>
-        <Navbar userLoggedIn={isLoggedIn} />
-        <Grid>
-          <Grid.Row id='dashboardBlock'>
-            <Grid.Column width={16}>
-              <Header as='h2' icon textAlign='center'>
-                <Header.Content>Dashboard</Header.Content>
+    if (isLoggedIn === true) {
+      return (
+        <div>
+          <Navbar userLoggedIn={isLoggedIn} />
+          <Grid>
+            <Grid.Row id='dashboardBlock'>
+              <Grid.Column width={16}>
+                <Header as='h2' icon textAlign='center'>
+                  <Header.Content>Dashboard</Header.Content>
+                </Header>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={4}>
+              <div id='CarParallex1' className='carParallexStyle'></div>
+              <Header as='h2' className='carTitle' id='mini-cars' icon textAlign='center'>
+                <Header.Content>Mini Cars</Header.Content>
               </Header>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns={4}>
-            <div id='CarParallex1' className='carParallexStyle'></div>
-            <Header as='h2' className='carTitle' id='mini-cars' icon textAlign='center'>
-              <Header.Content>Mini Cars</Header.Content>
+              <Segment id="budgetSection">
+                {miniCarItems}
+              </Segment>
+              <div id='CarParallex2' className='carParallexStyle'></div>
+              <Header as='h2' className='carTitle' id='sedan-cars' icon textAlign='center'>
+                <Header.Content>Sedan Cars</Header.Content>
+              </Header>
+              <Segment id="budgetSection">
+                {sedanCarItems}
+              </Segment>
+              <div id='CarParallex3' className='carParallexStyle'></div>
+              <Header as='h2' className='carTitle' id='prime-cars' icon textAlign='center'>
+                <Header.Content>Prime Cars</Header.Content>
+              </Header>
+              <Segment id="budgetSection">
+                {primeCarItems}
+              </Segment>
+              <div id='CarParallex4' className='carParallexStyle'></div>
+              <Header as='h2' className='carTitle' id='luxury-cars' icon textAlign='center'>
+                <Header.Content>Luxury Cars</Header.Content>
+              </Header>
+              <Segment id="budgetSection">
+                {luxuryCarItems}
+              </Segment>
+              <div id='CarParallex5' className='carParallexStyle'></div>
+            </Grid.Row>
+          </Grid>
+        </div>
+      )
+    }
+
+    if (isLoggedIn === false) {
+      return (
+        <div>
+          <Navbar userLoggedIn={isLoggedIn} />
+          <div id='dashboardBlock'>
+            <Header as='h2' icon textAlign='center'>
+              <Icon color='red' name='attention' circular />
+              <Header.Content>Oops!!!</Header.Content>
+              <Header.Subheader id='sub-header'>Something has gone wrong, Please 
+                <Link to='/login' id='relogin'>
+                   click here
+                </Link>to login again</Header.Subheader>
             </Header>
-            <Segment id="budgetSection">
-              {miniCarItems}
-            </Segment>
-            <div id='CarParallex2' className='carParallexStyle'></div>
-            <Header as='h2' className='carTitle' id='sedan-cars' icon textAlign='center'>
-              <Header.Content>Sedan Cars</Header.Content>
-            </Header>
-            <Segment id="budgetSection">
-              {sedanCarItems}
-            </Segment>
-            <div id='CarParallex3' className='carParallexStyle'></div>
-            <Header as='h2' className='carTitle' id='prime-cars' icon textAlign='center'>
-              <Header.Content>Prime Cars</Header.Content>
-            </Header>
-            <Segment id="budgetSection">
-              {primeCarItems}
-            </Segment>
-            <div id='CarParallex4' className='carParallexStyle'></div>
-            <Header as='h2' className='carTitle' id='luxury-cars' icon textAlign='center'>
-              <Header.Content>Luxury Cars</Header.Content>
-            </Header>
-            <Segment id="budgetSection">
-              {luxuryCarItems}
-            </Segment>
-            <div id='CarParallex5' className='carParallexStyle'></div>
-          </Grid.Row>
-        </Grid>
-      </div>
-    )
+          </div>
+        </div>
+      )
+    }
   }
 }
 
