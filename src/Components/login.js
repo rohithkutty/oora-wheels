@@ -7,7 +7,8 @@ import {
   Button,
   Divider,
   Header,
-  Message
+  Message,
+  Label
 } from "semantic-ui-react";
 import "../css/login.css";
 import { Link } from "react-router-dom";
@@ -24,16 +25,71 @@ class Login extends React.Component {
       errorAppeared: false,
       userLoggedIn: false,
       userExist: false,
-      incorrectDetails: false
+      incorrectDetails: false,
+      userRegistered: false,
+      invalidEmail: false,
+      invalidPass: false
     };
-    this.handleInput = this.handleInput.bind(this);
+    this.handleEmailInput = this.handleEmailInput.bind(this);
+    this.handlePasswordInput = this.handlePasswordInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.hidePopUp = this.hidePopUp.bind(this);
   }
 
-  handleInput(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+  handleEmailInput(e) {
+    if (e.target.value) {
+      let email = e.target.value;
+      var pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (email.match(pattern)) {
+        this.setState({
+          [e.target.name]: e.target.value,
+          invalidEmail: false
+        });
+        document.getElementById('username').style.borderColor = "grey";
+      } else {
+        this.setState({
+          invalidEmail: true
+        });
+        document.getElementById('username').style.borderColor = "red";
+      }
+    } else {
+      this.setState({
+        invalidEmail: false
+      })
+      document.getElementById('username').style.borderColor = "grey";
+    }
+  }
+
+  handlePasswordInput(e) {
+    if (e.target.value) {
+      var pswd = e.target.value;
+      var pswdLen = pswd.length;
+      if (pswdLen > 5) {
+        this.setState({
+          [e.target.name]: e.target.value,
+          invalidPass: false
+        });
+        document.getElementById('password').style.borderColor = "grey";
+      } else {
+        this.setState({
+          invalidPass: true
+        });
+        document.getElementById('password').style.borderColor = "red";
+      }
+    } else {
+      this.setState({
+        invalidPass: false
+      })
+      document.getElementById('password').style.borderColor = "grey";
+    }
+  }
+
+  hidePopUp() {
+    setTimeout(function () {
+      this.setState({ errorAppeared: false });
+      document.getElementById('username').style.borderColor = "grey";
+      document.getElementById('password').style.borderColor = "grey";
+    }.bind(this), 3000)
   }
 
   handleSubmit(e) {
@@ -63,10 +119,19 @@ class Login extends React.Component {
             this.setState({
               userExist: true
             })
+
+            setTimeout(function () {
+              this.setState({ userExist: false });
+            }.bind(this), 3000)
+
           } else if (user.message === "Password incorrect") {
             this.setState({
-              incorrectDetails : true
+              incorrectDetails: true
             })
+
+            setTimeout(function () {
+              this.setState({ incorrectDetails: false });
+            }.bind(this), 3000)
           }
         })
         .catch(err => {
@@ -80,29 +145,37 @@ class Login extends React.Component {
       })
 
       if (!login.username) {
-        document.getElementById('username').style.borderColor = "#912d2b";
+        document.getElementById('username').style.borderColor = "red";
       } else {
         document.getElementById('username').style.borderColor = "grey";
       }
 
       if (!login.password) {
-        document.getElementById('password').style.borderColor = "#912d2b";
+        document.getElementById('password').style.borderColor = "red";
       } else {
-        document.getElementById('username').style.borderColor = "grey";
+        document.getElementById('password').style.borderColor = "grey";
       }
 
+      this.hidePopUp();
     }
 
   }
 
-  render() {
-    document.title = "OORA Wheels | Login";
-
+  componentDidMount() {
     if (this.props.location.state) {
       if (this.props.location.state.registered === true) {
-        userRegistered = true;
+        this.setState({
+          userRegistered: true
+        })
       }
+      setTimeout(function () {
+        this.setState({ userRegistered: false });
+      }.bind(this), 3000)
     }
+  }
+
+  render() {
+    document.title = "OORA Wheels | Login";
 
     return (
       <div className="login">
@@ -122,7 +195,7 @@ class Login extends React.Component {
                         content='Please fill all the fields to login'>
                       </Message>
                     )}
-                    {(userRegistered === true) && (
+                    {(this.state.userRegistered === true) && (
                       <Message
                         id='successMessage'
                         success
@@ -165,10 +238,16 @@ class Login extends React.Component {
                       name="username"
                       icon="envelope"
                       placeholder="email address"
-                      onChange={this.handleInput}
+                      onChange={this.handleEmailInput}
                       className="inputValue"
+                      required
                     />
                   </Grid.Column>
+                  {(this.state.invalidEmail === true) && (
+                    <Grid.Column width={2}>
+                      <Label id='emailValidation' pointing='left'>Invalid email</Label>
+                    </Grid.Column>
+                  )}
                   <Grid.Column
                     width={6}
                     verticalAlign="middle"
@@ -184,10 +263,16 @@ class Login extends React.Component {
                       name="password"
                       icon="shield alternate"
                       placeholder="secret password"
-                      onChange={this.handleInput}
+                      onChange={this.handlePasswordInput}
                       className="inputValue"
+                      required
                     />
                   </Grid.Column>
+                  {(this.state.invalidPass === true) && (
+                    <Grid.Column width={2}>
+                      <Label id='passwordValidation' pointing='left'>Password should be minimum 6 digits</Label>
+                    </Grid.Column>
+                  )}
                   <Grid.Column width={8}>
                     <Form.Checkbox
                       className="checkbox-remember"
@@ -195,16 +280,14 @@ class Login extends React.Component {
                     />
                   </Grid.Column>
                   <Grid.Column width={8}>
-                    <Link to="/" className="forgotPassword">
+                    <Link to="/forgotPassword" className="forgotPassword">
                       Forgot password?
                     </Link>
                   </Grid.Column>
                   <Grid.Column width={16}>
-                    <Link to="/dashboard">
-                      <Button primary fluid onClick={this.handleSubmit}>
-                        Login
-                      </Button>
-                    </Link>
+                    <Button type='submit' primary fluid onClick={this.handleSubmit}>
+                      Login
+                    </Button>
                     <Divider horizontal>Or</Divider>
                     <Link to="/signup">
                       <Button secondary fluid>

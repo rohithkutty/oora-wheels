@@ -41,3 +41,10 @@
 #successMessage {
   text-align: center;
 }
+
+#emailValidation , #passwordValidation {
+  position: relative;
+  right: 25px;
+  color: white;
+  background-color: red;
+}

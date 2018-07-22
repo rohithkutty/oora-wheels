@@ -9,6 +9,7 @@ import Home from "./Components/home";
 import SignUp from "./Components/signup";
 import Dashboard from "./Components/dashboard";
 import ErrorPage from "./Components/error";
+import ForgotPassword from "./Components/forgotPassword";
 
 class App extends Component {
   render() {
@@ -22,6 +23,7 @@ class App extends Component {
               <Route path="/signup" component={SignUp} />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/error" component={ErrorPage} />
+              <Route path="/forgotPassword" component={ForgotPassword} />
             </div>
           </Router>
         </div>
